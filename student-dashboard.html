@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | SkillLink</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+
+    <nav class="bg-slate-800 border-b border-slate-700 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center font-bold text-xl"><i class="fa-solid fa-graduation-cap"></i></div>
+            <span class="text-xl font-bold">SkillLink Student Portal</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <span id="studentNameDisplay" class="font-semibold text-slate-300">Loading...</span>
+            <button onclick="logout()" class="px-4 py-2 bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white rounded-lg transition text-sm">Logout</button>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-6 py-8 grid lg:grid-cols-3 gap-8">
+        <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 h-fit">
+            <div class="text-center mb-6">
+                <div class="w-24 h-24 rounded-full bg-indigo-500/20 border-2 border-indigo-500 mx-auto flex items-center justify-center text-3xl font-bold text-indigo-400 mb-3" id="avatarText">S</div>
+                <h3 id="profileName" class="text-xl font-bold">Student Name</h3>
+                
+                <!-- PRIMARY SKILL BADGE -->
+                <div class="mt-2">
+                    <span id="profileSkillBadge" class="px-3 py-1 bg-sky-500/20 text-sky-400 font-bold text-xs rounded-full border border-sky-500/30">
+                        Skill: Loading...
+                    </span>
+                </div>
+
+                <span id="verificationBadge" class="inline-block mt-3 px-3 py-1 bg-amber-500/20 text-amber-400 text-xs rounded-full">Verification Pending</span>
+            </div>
+
+            <div class="space-y-3 text-sm border-t border-slate-700 pt-4">
+                <div><span class="text-slate-400">Department:</span> <span id="profileDept" class="text-slate-200">N/A</span></div>
+                <div><span class="text-slate-400">College:</span> <span id="profileCollege" class="text-slate-200">N/A</span></div>
+                <div><span class="text-slate-400">Academic Year:</span> <span id="profileYear" class="text-slate-200">N/A</span></div>
+                <div><span class="text-slate-400">Student Code:</span> <span id="profileCode" class="text-slate-200">N/A</span></div>
+                <div><span class="text-slate-400">Total Earnings:</span> <span id="profileEarnings" class="text-green-400 font-bold">₹0.00</span></div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <label class="text-sm font-semibold text-slate-400 block mb-2">Current Availability</label>
+                <select id="statusSelect" onchange="changeStatus()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-slate-200 text-sm">
+                    <option value="available">Available for Hire</option>
+                    <option value="busy">Busy</option>
+                    <option value="on_duty">On Duty</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="lg:col-span-2 space-y-6">
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-calendar-check text-sky-400"></i> Incoming Service Requests</h3>
+                <div id="bookingsList" class="space-y-4">
+                    <p class="text-slate-400 text-sm">No service bookings received yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="API.js"></script>
+<script>
+async function loadStudentData() {
+    try {
+        const profile = await SkillLinkAPI.request('/student/profile');
+        const data = profile.data;
+
+        document.getElementById('studentNameDisplay').innerText = data.full_name;
+        document.getElementById('profileName').innerText = data.full_name;
+        document.getElementById('avatarText').innerText = data.full_name.charAt(0);
+        document.getElementById('profileSkillBadge').innerText = `Expertise: ${data.primary_skill || 'General Skill'}`;
+        document.getElementById('profileDept').innerText = data.department;
+        document.getElementById('profileCollege').innerText = data.college_name;
+        document.getElementById('profileYear').innerText = data.academic_year;
+        document.getElementById('profileCode').innerText = data.student_code;
+        document.getElementById('profileEarnings').innerText = `₹${data.total_earnings}`;
+        document.getElementById('statusSelect').value = data.availability_status;
+
+        if (data.verification_status === 'Verified') {
+            document.getElementById('verificationBadge').className = "inline-block mt-3 px-3 py-1 bg-green-500/20 text-green-400 text-xs rounded-full";
+            document.getElementById('verificationBadge').innerText = "✔ Verified Student";
+        }
+    } catch (err) {
+        alert("Session expired. Redirecting to login...");
+        SkillLinkAPI.clearSession();
+        window.location.href = '/student.html';
+    }
+}
+
+async function changeStatus() {
+    const status = document.getElementById('statusSelect').value;
+    await SkillLinkAPI.request('/student/availability', { method: 'PUT', body: JSON.stringify({ status }) });
+    alert("Status updated successfully!");
+}
+
+function logout() {
+    SkillLinkAPI.clearSession();
+    window.location.href = '/student.html';
+}
+
+loadStudentData();
+</script>
+</body>
+</html>
