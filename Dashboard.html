@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillLink | Enterprise Gateway</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #020617; color: white; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .glow:hover { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); border-color: #6366f1; }
+        .gradient-text { background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <div class="max-w-4xl w-full p-8 text-center">
+        <!-- Header -->
+        <h1 class="text-6xl font-bold mb-6 tracking-tighter">Welcome to <span class="gradient-text">SkillLink</span></h1>
+        <p class="text-slate-400 text-lg mb-12">The unified ecosystem for student talent and local community needs.</p>
+
+        <!-- Gateway Grid -->
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Student Portal -->
+            <div class="glass p-8 rounded-3xl glow transition-all duration-500">
+                <div class="text-indigo-500 text-4xl mb-6"><i class="fas fa-rocket"></i></div>
+                <h2 class="text-2xl font-bold mb-2">Student Portal</h2>
+                <p class="text-slate-400 mb-8">Showcase your skills, manage your portfolio, and track your local impact.</p>
+                <a href="student-login.html" class="block w-full py-3 bg-indigo-600 rounded-xl font-semibold hover:bg-indigo-500 transition">Access Student Hub</a>
+            </div>
+
+            <!-- Customer Portal -->
+            <div class="glass p-8 rounded-3xl glow transition-all duration-500">
+                <div class="text-purple-500 text-4xl mb-6"><i class="fas fa-search"></i></div>
+                <h2 class="text-2xl font-bold mb-2">Customer Portal</h2>
+                <p class="text-slate-400 mb-8">Discover top-rated local students and manage your service requests with ease.</p>
+                <a href="customer-login.html" class="block w-full py-3 bg-purple-600 rounded-xl font-semibold hover:bg-purple-500 transition">Access Client Portal</a>
+            </div>
+        </div>
+
+        <!-- Extra Feature: Quick Info -->
+        <div class="mt-16 flex justify-center gap-12 text-sm text-slate-500">
+            <div class="flex items-center gap-2"><i class="fas fa-shield-halved text-green-500"></i> Verified Profiles</div>
+            <div class="flex items-center gap-2"><i class="fas fa-bolt text-yellow-500"></i> Instant Booking</div>
+            <div class="flex items-center gap-2"><i class="fas fa-wallet text-blue-500"></i> Secure Payouts</div>
+        </div>
+    </div>
+
+    <script>
+        // Unique feature: Magnetic tilt effect on hover
+        document.querySelectorAll('.glow').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.transform = `perspective(1000px) rotateX(${(y - rect.height/2)/20}deg) rotateY(${(x - rect.width/2)/20}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+            });
+        });
+    </script>
+</body>
+</html>
