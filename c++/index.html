@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skill Review & Rating</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>⭐ Skill Review & Rating</h1>
+    <p>Students ke skills ko rate karo aur review likho</p>
+  </header>
+
+  <main>
+    <!-- Add student form -->
+    <section class="card form-card">
+      <h2> Add new student</h2>
+      <input type="text" id="studentName" placeholder="Student ka naam">
+      <input type="text" id="studentSkill" placeholder="Skill (e.g. Python, Design)">
+      <button id="addStudentBtn">+ Add Student</button>
+    </section>
+
+    <!-- Student list -->
+    <section id="studentList" class="student-list"></section>
+  </main>
+
+  <!-- Review Modal -->
+  <div id="reviewModal" class="modal hidden">
+                                                                                                                       
+    <div class="modal-box">
+      <span id="closeModal" class="close-btn">✕</span>
+      <h2 id="modalStudentName"></h2>
+      <p id="modalStudentSkill" class="skill-label"></p>
+      <div class="avg-rating">
+        <span id="avgStars" class="stars big"></span>
+        <span id="avgNumber"></span>
+      </div>
+
+      <hr>
+
+      <h3>Apna Review Do</h3>
+      <label>Rating:</label>
+      <div id="starPicker" class="star-picker">
+        <span data-value="1">★</span>
+        <span data-value="2">★</span>
+        <span data-value="3">★</span>
+        <span data-value="4">★</span>
+        <span data-value="5">★</span>
+      </div>
+
+      <input type="text" id="reviewerName" placeholder="Aapka naam">
+      <textarea id="reviewText" placeholder="Review likho..."></textarea>
+      <button id="submitReviewBtn">Submit Review</button>
+
+      <h3>Sab Reviews</h3>
+      <div id="reviewsContainer"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
